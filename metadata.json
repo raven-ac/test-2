@@ -1,0 +1,6 @@
+{
+  "name": "RAVEN — High-End Streetwear",
+  "description": "Premium monochrome streetwear and avant-garde luxury apparel. Explore seasonal drops, curated capsules, real customer authentication, and orders.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

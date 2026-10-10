@@ -1,0 +1,358 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Customer profile account information stored in Firestore",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The UID matching the Firebase Authentication user ID",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "email": {
+          "type": "string",
+          "description": "User email address",
+          "maxLength": 256
+        },
+        "displayName": {
+          "type": "string",
+          "description": "Full name or chosen handle",
+          "maxLength": 128
+        },
+        "photoURL": {
+          "type": "string",
+          "description": "Profile avatar image URL from Google or custom upload",
+          "maxLength": 1024
+        },
+        "phone": {
+          "type": "string",
+          "description": "Contact phone number",
+          "maxLength": 32
+        },
+        "role": {
+          "type": "string",
+          "description": "Account authorization role",
+          "enum": ["customer", "admin"],
+          "maxLength": 32
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Account registration timestamp"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "Profile last updated timestamp"
+        }
+      },
+      "required": ["id", "email", "role"]
+    },
+    "UserAddress": {
+      "title": "UserAddress",
+      "description": "Saved shipping address for an authenticated customer",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique address record identifier",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "userId": {
+          "type": "string",
+          "description": "User UID owning this shipping address",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "recipientName": {
+          "type": "string",
+          "description": "Full recipient name",
+          "maxLength": 128
+        },
+        "street": {
+          "type": "string",
+          "description": "Primary street address",
+          "maxLength": 256
+        },
+        "apartment": {
+          "type": "string",
+          "description": "Suite, apartment, or unit number",
+          "maxLength": 128
+        },
+        "city": {
+          "type": "string",
+          "description": "City name",
+          "maxLength": 128
+        },
+        "state": {
+          "type": "string",
+          "description": "State, province, or region",
+          "maxLength": 128
+        },
+        "postalCode": {
+          "type": "string",
+          "description": "Postal or ZIP code",
+          "maxLength": 32
+        },
+        "country": {
+          "type": "string",
+          "description": "Country name or code",
+          "maxLength": 64
+        },
+        "isDefault": {
+          "type": "boolean",
+          "description": "Whether this is the default shipping destination"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Record creation timestamp"
+        }
+      },
+      "required": ["id", "userId", "recipientName", "street", "city", "postalCode", "country"]
+    },
+    "WishlistItem": {
+      "title": "WishlistItem",
+      "description": "Customer bookmarked clothing piece",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Identifier matching the product ID",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "userId": {
+          "type": "string",
+          "description": "UID of the user saving this product",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "productId": {
+          "type": "string",
+          "description": "Target product ID",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "addedAt": {
+          "type": "string",
+          "description": "Timestamp when added to wishlist"
+        }
+      },
+      "required": ["id", "userId", "productId"]
+    },
+    "Order": {
+      "title": "Order",
+      "description": "Customer purchase transaction order",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique order tracking code or document ID",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "userId": {
+          "type": "string",
+          "description": "Customer UID who placed the order",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "customerEmail": {
+          "type": "string",
+          "description": "Email address of customer",
+          "maxLength": 256
+        },
+        "customerName": {
+          "type": "string",
+          "description": "Name of customer",
+          "maxLength": 128
+        },
+        "subtotal": {
+          "type": "number",
+          "description": "Subtotal purchase amount in USD"
+        },
+        "shipping": {
+          "type": "number",
+          "description": "Shipping fee in USD"
+        },
+        "tax": {
+          "type": "number",
+          "description": "Calculated sales tax in USD"
+        },
+        "total": {
+          "type": "number",
+          "description": "Grand total paid in USD"
+        },
+        "status": {
+          "type": "string",
+          "description": "Fulfillment status of order",
+          "enum": ["pending", "processing", "shipped", "delivered", "cancelled"],
+          "maxLength": 32
+        },
+        "shippingAddress": {
+          "type": "string",
+          "description": "Serialized or formatted delivery address",
+          "maxLength": 1024
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Order placement timestamp"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "Order update timestamp"
+        }
+      },
+      "required": ["id", "userId", "customerEmail", "total", "status"]
+    },
+    "Product": {
+      "title": "Product",
+      "description": "Apparel and streetwear catalog item",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique SKU or product ID",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "name": {
+          "type": "string",
+          "description": "Garment title",
+          "maxLength": 256
+        },
+        "slug": {
+          "type": "string",
+          "description": "URL slug for product",
+          "maxLength": 128
+        },
+        "category": {
+          "type": "string",
+          "description": "Apparel category (e.g., outerwear, tops, bottoms, accessories)",
+          "maxLength": 64
+        },
+        "price": {
+          "type": "number",
+          "description": "Retail price in USD"
+        },
+        "description": {
+          "type": "string",
+          "description": "Garment conceptual description",
+          "maxLength": 2048
+        },
+        "details": {
+          "type": "string",
+          "description": "Fabric compositions and fit notes",
+          "maxLength": 1024
+        },
+        "stock": {
+          "type": "number",
+          "description": "Units available in stock"
+        },
+        "featured": {
+          "type": "boolean",
+          "description": "Featured on homepage or top banner"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Creation timestamp"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "Last modified timestamp"
+        }
+      },
+      "required": ["id", "name", "price", "category", "stock"]
+    },
+    "Admin": {
+      "title": "Admin",
+      "description": "System administrator identity",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Administrator UID",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "email": {
+          "type": "string",
+          "description": "Admin email",
+          "maxLength": 256
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Designation timestamp"
+        }
+      },
+      "required": ["id", "email"]
+    },
+    "AdminEmail": {
+      "title": "AdminEmail",
+      "description": "Authorized administrator email registry document",
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "description": "Authorized Gmail address for administrator access",
+          "maxLength": 256
+        },
+        "addedBy": {
+          "type": "string",
+          "description": "Email or UID of admin granting permission",
+          "maxLength": 256
+        },
+        "addedAt": {
+          "type": "string",
+          "description": "Timestamp when admin access was granted"
+        }
+      },
+      "required": ["email", "addedAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": {
+        "$ref": "#/entities/UserProfile"
+      },
+      "description": "Private user profiles. Accessible by document owner or verified admin."
+    },
+    "/users/{userId}/addresses/{addressId}": {
+      "schema": {
+        "$ref": "#/entities/UserAddress"
+      },
+      "description": "Customer shipping addresses subcollection. Strictly accessed by owner or admin."
+    },
+    "/users/{userId}/wishlist/{productId}": {
+      "schema": {
+        "$ref": "#/entities/WishlistItem"
+      },
+      "description": "Customer wishlist bookmark items subcollection. Strictly owned by user."
+    },
+    "/orders/{orderId}": {
+      "schema": {
+        "$ref": "#/entities/Order"
+      },
+      "description": "Orders collection. Customers can create and view their own orders; admins can manage all."
+    },
+    "/products/{productId}": {
+      "schema": {
+        "$ref": "#/entities/Product"
+      },
+      "description": "Catalog products. Publicly readable by all users; manageable only by admins."
+    },
+    "/admins/{adminId}": {
+      "schema": {
+        "$ref": "#/entities/Admin"
+      },
+      "description": "Administrator access control list documents."
+    },
+    "/admin_emails/{emailId}": {
+      "schema": {
+        "$ref": "#/entities/AdminEmail"
+      },
+      "description": "Registry of authorized admin email addresses managed by existing administrators."
+    }
+  }
+}
